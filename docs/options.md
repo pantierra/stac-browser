@@ -193,15 +193,18 @@ Known hosts that require hash mode are Amazon S3 and GitHub Pages.
 
 ### pathPrefix
 
-***build-only option***
+***build-only option*** (except in the Docker image, where `SB_pathPrefix` can be set at container start)
 
 If you don't deploy the STAC Browser instance at the root path of your (sub) domain, then you need to set the path prefix
 when building (or running) STAC Browser. Known hosts that require hash mode are Amazon S3 and GitHub Pages.
 
 Either set this option to the respective path (e.g. `/browser/`) in the config file or as environment variable (`SB_pathPrefix`) when running or building.
 
-This will build STAC Browser in a way that it can be hosted at `https://example.com/browser` for example.
-Using this parameter for the dev server will make STAC Browser available at `http://localhost:8080/browser`.
+In the Docker image, `SB_pathPrefix` is applied at container start to static asset URLs, nginx routing, and runtime config.
+The `pathPrefix` build argument only sets the default value for `SB_pathPrefix`.
+
+This will build STAC Browser in a way that it can be hosted at `https://example.com/browser/` for example.
+Using this parameter for the dev server will make STAC Browser available at `http://localhost:8080/browser/`.
 
 ## Security
 

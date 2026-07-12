@@ -1,3 +1,46 @@
+#!/bin/sh
+set -eu
+
+PLACEHOLDER="/__SB_PATH_PREFIX__/"
+
+normalize_path_prefix() {
+    value="${1:-/}"
+    case "$value" in
+        *[!a-zA-Z0-9/_.-]*)
+            echo "Error: SB_pathPrefix contains invalid characters: $value" >&2
+            exit 1
+            ;;
+    esac
+    case "$value" in
+        /*) ;;
+        *) value="/$value" ;;
+    esac
+    if [ "$value" = "/" ]; then
+        printf '%s' "/"
+        return
+    fi
+    case "$value" in
+        */) ;;
+        *) value="${value}/" ;;
+    esac
+    printf '%s' "$value"
+}
+
+export SB_pathPrefix="$(normalize_path_prefix "${SB_pathPrefix:-/}")"
+
+if grep -rqF "$PLACEHOLDER" /usr/share/nginx/html/ 2>/dev/null; then
+    grep -rlF "$PLACEHOLDER" /usr/share/nginx/html/ | xargs sed -i "s|${PLACEHOLDER}|${SB_pathPrefix}|g"
+fi
+
+cp /etc/nginx/templates/default.conf /etc/nginx/conf.d/default.conf
+barePrefix=$(printf '%s' "${SB_pathPrefix}" | sed 's|/*$||')
+if [ -n "${barePrefix}" ]; then
+    sed -i "s|<prefixRedirect>|    location = ${barePrefix} { return 301 ${barePrefix}/; }|" /etc/nginx/conf.d/default.conf
+else
+    sed -i '/<prefixRedirect>/d' /etc/nginx/conf.d/default.conf
+fi
+sed -i "s|<pathPrefix>|${SB_pathPrefix}|g" /etc/nginx/conf.d/default.conf
+
 # echo a string, handling different types
 safe_echo() {
     # $1 = value

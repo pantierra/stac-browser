@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - The Browse menu also loads additional Collections on demand
+- Runtime-configurable `pathPrefix` in the Docker image via `SB_pathPrefix`
 
 ### Changed
 
@@ -20,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Redirect bare `pathPrefix` URLs to their trailing-slash form in the Docker/nginx image (e.g. `/browser` → `/browser/`)
 - Fix global error handling in certain edge-cases
 - Improve speed of catalog/collection duplicate detection
 - Fix search link detection

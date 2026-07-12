@@ -1,0 +1,33 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - Dockerfile
+      - config.schema.json
+      - docker/**
+      - index.html
+      - src/merged-config.js
+      - tests/docker/**
+      - vite.config.js
+  pull_request:
+    branches:
+      - main
+    paths:
+      - Dockerfile
+      - config.schema.json
+      - docker/**
+      - index.html
+      - src/merged-config.js
+      - tests/docker/**
+      - vite.config.js
+
+jobs:
+  pathprefix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Test runtime pathPrefix
+        run: bash tests/docker/test-pathprefix.sh
