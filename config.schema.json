@@ -69,10 +69,8 @@
       "type": ["boolean"]
     },
     "buildTileUrlTemplate": {
-      "type": ["null"],
-      "format": "function",
-      "noCLI": true,
-      "noEnv": true
+      "type": ["string", "null"],
+      "noCLI": true
     },
     "getMapSourceOptions": {
       "type": ["null"],

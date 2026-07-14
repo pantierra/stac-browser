@@ -391,13 +391,20 @@ You can enable this option by providing a function with a single parameter that 
 The given function can optionally be async (i.e. return a Promise).
 The parameter passed into the function is an [Asset object](https://m-mohr.github.io/stac-js/latest/#asset) as defined in stac-js.
 
-**Example**:
+**Example (config file)**:
 
 ```js
 buildTileUrlTemplate: (asset) => "https://tiles.rdnt.io/tiles/{z}/{x}/{y}@2x?url=" + encodeURIComponent(asset.getAbsoluteUrl()),
 ```
 
-Please note that this option can only be provided through a config file and is not available via CLI/ENV.
+Alternatively, a string template can be provided via environment variables (e.g. `SB_buildTileUrlTemplate` for the Docker image).
+Supported placeholders: `{z}`, `{x}`, `{y}` (passed through unchanged), `{assetUrl}` (encoded absolute asset URL, falling back to the raw href), `{assetHref}` (raw asset href).
+
+**Example (ENV)**:
+
+```bash
+SB_buildTileUrlTemplate="https://tiles.example.com/{z}/{x}/{y}?asset={assetUrl}"
+```
 
 ### useTileLayerAsFallback
 

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - The Browse menu also loads additional Collections on demand
+- `buildTileUrlTemplate` can now be provided as a string template via environment variables (e.g. `SB_buildTileUrlTemplate` for the Docker image), in addition to a function in config files
 
 ### Changed
 

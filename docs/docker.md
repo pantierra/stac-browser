@@ -100,4 +100,11 @@ You can not. You need to build your own image because `pathPrefix` is a build-on
 
 > How do I specify `buildTileUrlTemplate` via docker env?
 
-You can not. Consider modifying the dockerfile and using a custom `config.js` file (or `runtime-config.js` for runtime configuration)
+Pass it as a string template:
+
+```bash
+docker run -p 8080:8080 \
+  -e SB_catalogUrl="https://earth-search.aws.element84.com/v1/" \
+  -e SB_buildTileUrlTemplate="https://tiles.example.com/{z}/{x}/{y}?asset={assetUrl}" \
+  stac-browser:v1
+```
